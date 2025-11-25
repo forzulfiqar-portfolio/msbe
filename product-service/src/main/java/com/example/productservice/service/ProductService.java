@@ -2,6 +2,8 @@
 
 import com.example.productservice.model.Product;
 import com.example.productservice.repository.ProductRepository;
+
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import java.util.List;
 
@@ -17,7 +19,9 @@ public class ProductService {
         return repository.save(product);
     }
 
+    @Cacheable("productCache")
     public List<Product> getAllProducts() {
-        return repository.findAll();
+        List<Product> prodList = repository.findAll();
+        return prodList;
     }
 }
