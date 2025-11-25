@@ -1,0 +1,54 @@
+# =====================
+# Maven / Java
+# =====================
+target/
+*.log
+*.class
+*.jar
+*.war
+*.ear
+*.iml
+*.iws
+*.ipr
+
+# =====================
+# Eclipse
+# =====================
+.settings/
+.project
+.classpath
+.recommenders/
+bin/
+
+# =====================
+# IntelliJ IDEA (optional if someone uses it)
+# =====================
+.idea/
+*.iml
+out/
+
+# =====================
+# OS files
+# =====================
+.DS_Store
+Thumbs.db
+ehthumbs.db
+*.swp
+*.swo
+
+# =====================
+# Spring Boot
+# =====================
+spring.log
+
+# =====================
+# Temporary files
+# =====================
+*.tmp
+*.temp
+
+# =====================
+# Other IDE / editors
+# =====================
+.vscode/
+*.code-workspace
