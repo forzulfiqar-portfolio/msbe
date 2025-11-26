@@ -1,0 +1,102 @@
+server:
+  port: 8443
+
+spring:
+  application:
+    name: apigateway
+
+  cloud:
+    gateway:
+
+      # ---- ROUTES ----
+      routes:
+
+        # ---------------- PRODUCT SERVICE ----------------
+        # Backend: http://localhost:8084/product-service/products/...
+        - id: product-service
+          uri: http://localhost:8084
+          predicates:
+            - Path=/api/products/**
+          filters:
+            - StripPrefix=1
+            - PrefixPath=/product-service
+
+        # ---------------- ORDER SERVICE ----------------
+        # Backend: http://localhost:8081/order-service/orders/...
+        - id: order-service
+          uri: http://localhost:8081
+          predicates:
+            - Path=/api/orders/**
+          filters:
+            - StripPrefix=1
+            - PrefixPath=/order-service
+
+        # ---------------- INVENTORY SERVICE ----------------
+        # Backend: http://localhost:8082/inventory-service/inventory/...
+        - id: inventory-service
+          uri: http://localhost:8082
+          predicates:
+            - Path=/api/inventory/**
+          filters:
+            - StripPrefix=1
+            - PrefixPath=/inventory-service
+
+        # ---------------- PAYMENT SERVICE ----------------
+        # Backend: http://localhost:8083/payment-service/payments/...
+        - id: payment-service
+          uri: http://localhost:8083
+          predicates:
+            - Path=/api/payments/**
+          filters:
+            - StripPrefix=1
+            - PrefixPath=/payment-service
+
+        # ---------------- WEBSOCKETS ----------------
+        # Adjust if your websocket lives in another service
+        - id: websocket-routes
+          uri: http://localhost:8081
+          predicates:
+            - Path=/ws/**
+          filters:
+            - StripPrefix=1
+
+      # ---- CORS (Angular Front-End) ----
+      globalcors:
+        corsConfigurations:
+          '[/**]':
+            allowedOrigins:
+              - "http://localhost:4200"
+            allowedMethods:
+              - GET
+              - POST
+              - PUT
+              - DELETE
+              - OPTIONS
+            allowedHeaders: "*"
+            allowCredentials: true
+
+      # ---- Important for WebSockets ----
+      httpclient:
+        connect-timeout: 5000
+        response-timeout: 5000
+
+
+# ---- LOGGING ----
+logging:
+  level:
+    org.springframework.cloud.gateway: DEBUG
+    org.springframework.web.reactive: INFO
+
+
+# ---- ACTUATOR / METRICS ----
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,prometheus,gateway
+  endpoint:
+    gateway:
+      enabled: true
+  metrics:
+    enable:
+      all: true
