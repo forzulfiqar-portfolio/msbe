@@ -3,6 +3,8 @@
 import com.example.common_lib.SubmitResult;
 import com.example.productservice.model.Product;
 import com.example.productservice.service.ProductService;
+
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
@@ -14,6 +16,11 @@ public class ProductController {
 
     public ProductController(ProductService service) {
         this.service = service;
+    }
+    
+    @GetMapping("/instance")
+    public String instance(@Value("${server.port}") String port) {
+        return "Response from product-service instance on port " + port;
     }
 
     // Create product (raw Product response)
