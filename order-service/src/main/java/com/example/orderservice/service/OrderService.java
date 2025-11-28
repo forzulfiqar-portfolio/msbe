@@ -27,17 +27,16 @@ public class OrderService {
         orders.setStatus("CREATED");
         Orders savedOrder = orderRepository.save(orders);
 
-        // Build event object (JSON-safe)
         OrderCreatedEvent event = new OrderCreatedEvent(
-                savedOrder.getId(),            // Long
-                savedOrder.getProductId(),     // Long
-                savedOrder.getQuantity(),      // int
-                savedOrder.getStatus()         // String
+        		savedOrder.getId(),
+        		savedOrder.getProductId(),
+        		savedOrder.getQuantity(),
+        		savedOrder.getStatus()
         );
 
-        // Publish event to Kafka
-        kafkaProducer.sendOrderCreatedEvent(event);
+        kafkaProducer.send("order-events", event);
 
+        //kafkaProducer.convertAndSend("/topic/orders", event);
         // DO NOT send WebSocket updates from microservices anymore
         // WebSockets will be moved to Notification-Service
 

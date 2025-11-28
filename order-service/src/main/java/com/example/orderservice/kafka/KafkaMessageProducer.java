@@ -3,8 +3,6 @@ package com.example.orderservice.kafka;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
-import com.example.orderservice.kafka.events.OrderCreatedEvent;
-
 @Service
 public class KafkaMessageProducer {
 
@@ -14,9 +12,8 @@ public class KafkaMessageProducer {
         this.kafkaTemplate = kafkaTemplate;
     }
 
-    public void sendOrderCreatedEvent(OrderCreatedEvent event) {
-        kafkaTemplate.send("order-events", event);
-        System.out.println("Sent event: " + event);
+    public void send(String topic, Object event) {
+        kafkaTemplate.send(topic, event);
+        System.out.println("Kafka sent → " + event);
     }
 }
-

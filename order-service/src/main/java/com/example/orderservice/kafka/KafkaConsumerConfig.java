@@ -1,46 +1,38 @@
 package com.example.orderservice.kafka;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import org.apache.kafka.clients.consumer.ConsumerConfig;
+import com.example.orderservice.kafka.events.OrderCreatedEvent;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.kafka.annotation.EnableKafka;
 import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
-import org.springframework.kafka.core.ConsumerFactory;
 import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
 import org.springframework.kafka.support.serializer.JsonDeserializer;
 
-import com.example.orderservice.kafka.events.OrderCreatedEvent;
+import java.util.HashMap;
+import java.util.Map;
 
 @Configuration
-@EnableKafka
 public class KafkaConsumerConfig {
 
     @Bean
-    public ConsumerFactory<String, OrderCreatedEvent> orderEventConsumerFactory() {
-        Map<String, Object> config = new HashMap<>();
+    public ConcurrentKafkaListenerContainerFactory<String, OrderCreatedEvent> orderKafkaListenerFactory() {
 
-        config.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
-        config.put(ConsumerConfig.GROUP_ID_CONFIG, "order-service-group");
-        config.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
-        config.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, JsonDeserializer.class);
-        config.put(JsonDeserializer.TRUSTED_PACKAGES, "*");
+        Map<String, Object> props = new HashMap<>();
+        props.put("bootstrap.servers", "localhost:9092");
+        props.put("group.id", "order-service-group");
+        props.put("key.deserializer", StringDeserializer.class);
 
-        return new DefaultKafkaConsumerFactory<>(
-                config,
-                new StringDeserializer(),
-                new JsonDeserializer<>(OrderCreatedEvent.class)
-        );
-    }
+        JsonDeserializer<OrderCreatedEvent> jsonDeserializer =
+                new JsonDeserializer<>(OrderCreatedEvent.class);
+        jsonDeserializer.addTrustedPackages("*");
 
-    @Bean
-    public ConcurrentKafkaListenerContainerFactory<String, OrderCreatedEvent> orderEventListenerFactory() {
+        DefaultKafkaConsumerFactory<String, OrderCreatedEvent> consumerFactory =
+                new DefaultKafkaConsumerFactory<>(props, new StringDeserializer(), jsonDeserializer);
+
         ConcurrentKafkaListenerContainerFactory<String, OrderCreatedEvent> factory =
                 new ConcurrentKafkaListenerContainerFactory<>();
-        factory.setConsumerFactory(orderEventConsumerFactory());
+        factory.setConsumerFactory(consumerFactory);
+
         return factory;
     }
 }
