@@ -1,4 +1,4 @@
-package com.example.productservice.configs;
+package com.example.notificationservice.configs;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;

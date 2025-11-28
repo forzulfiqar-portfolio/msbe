@@ -42,12 +42,12 @@ spring:
             - StripPrefix=1
 
         # =====================================================
-        # ===============  WEBSOCKETS & SOCKJS ================
+        # ================= WEBSOCKETS / SOCKJS ================
         # =====================================================
 
-        # Forward everything under /ws/** to order-service without stripping
-        - id: order-ws
-          uri: lb://order-service
+        # Forward all WebSocket traffic to NOTIFICATION-SERVICE
+        - id: notification-ws
+          uri: lb://notification-service
           predicates:
             - Path=/ws/**
           filters:

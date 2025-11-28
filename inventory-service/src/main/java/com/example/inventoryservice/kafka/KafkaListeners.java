@@ -13,7 +13,7 @@ public class KafkaListeners {
 	@Autowired
 	InventoryService inventoryService;
 
-    @KafkaListener(topics = "order-events", groupId = "inventory-service-group")
+    @KafkaListener(topics = "order-events", groupId = "${spring.kafka.consumer.group-id}")
     public void listen(OrderCreatedEvent event) {
 		System.out.println("📥 Received order event: " + event);
 		inventoryService.handleOrderCreated(event);

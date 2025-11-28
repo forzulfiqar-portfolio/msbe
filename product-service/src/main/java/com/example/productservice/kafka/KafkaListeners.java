@@ -8,7 +8,7 @@ import com.example.common_lib.kafka.events.OrderCreatedEvent;
 @Component
 public class KafkaListeners {
 
-    @KafkaListener(topics = "order-events", groupId = "product-service-group")
+    @KafkaListener(topics = "order-events", groupId = "${spring.kafka.consumer.group-id}")
     public void listen(OrderCreatedEvent event) {
 		System.out.println("📥 Received order event: " + event);	
 	}

@@ -36,10 +36,6 @@ public class OrderService {
 
         kafkaProducer.send("order-events", event);
 
-        //kafkaProducer.convertAndSend("/topic/orders", event);
-        // DO NOT send WebSocket updates from microservices anymore
-        // WebSockets will be moved to Notification-Service
-
         return savedOrder;
     }
 
