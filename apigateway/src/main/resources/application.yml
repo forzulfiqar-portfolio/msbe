@@ -1,0 +1,65 @@
+server:
+  port: 8443
+
+spring:
+  application:
+    name: apigateway
+
+  cloud:
+    gateway:
+      routes:
+
+        # ------------ PRODUCT SERVICE (REST) ------------
+        - id: product-service
+          uri: lb://product-service
+          predicates:
+            - Path=/api/products/**
+          filters:
+            - StripPrefix=1
+
+        # ------------ ORDER SERVICE (REST) ------------
+        - id: order-service-rest
+          uri: lb://order-service
+          predicates:
+            - Path=/api/orders/**
+          filters:
+            - StripPrefix=1
+
+        # ------------ PAYMENT SERVICE (REST) ------------
+        - id: payment-service
+          uri: lb://payment-service
+          predicates:
+            - Path=/api/payments/**
+          filters:
+            - StripPrefix=1
+
+        # ------------ INVENTORY SERVICE (REST) ------------
+        - id: inventory-service
+          uri: lb://inventory-service
+          predicates:
+            - Path=/api/inventory/**
+          filters:
+            - StripPrefix=1
+
+        # =====================================================
+        # ===============  WEBSOCKETS & SOCKJS ================
+        # =====================================================
+
+        # Forward everything under /ws/** to order-service without stripping
+        - id: order-ws
+          uri: lb://order-service
+          predicates:
+            - Path=/ws/**
+          filters:
+            - StripPrefix=0
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+    fetch-registry: true
+    register-with-eureka: true
+
+  instance:
+    hostname: localhost
+    prefer-ip-address: false
