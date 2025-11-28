@@ -1,5 +1,6 @@
 package com.example.inventoryservice.service;
 
+import com.example.common_lib.kafka.events.OrderCreatedEvent;
 import com.example.inventoryservice.model.InventoryItem;
 import com.example.inventoryservice.repository.InventoryRepository;
 import org.springframework.stereotype.Service;
@@ -22,7 +23,7 @@ public class InventoryService {
         return false;
     }
     
-    public void handleOrderCreated(String message) {
+    public void handleOrderCreated(OrderCreatedEvent event) {
        System.out.println("handleOrderCreated in InventoryService");
     }
     

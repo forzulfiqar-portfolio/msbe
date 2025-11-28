@@ -1,7 +1,7 @@
 package com.example.orderservice.service;
 
-import com.example.orderservice.kafka.KafkaMessageProducer;
-import com.example.orderservice.kafka.events.OrderCreatedEvent;
+import com.example.orderservice.kafka.KafkaProducer;
+import com.example.common_lib.kafka.events.OrderCreatedEvent;
 import com.example.orderservice.model.Orders;
 import com.example.orderservice.repository.OrderRepository;
 
@@ -13,7 +13,7 @@ import java.util.List;
 public class OrderService {
 
     @Autowired
-    private KafkaMessageProducer kafkaProducer;
+    private KafkaProducer kafkaProducer;
 
     private final OrderRepository orderRepository;
 

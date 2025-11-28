@@ -17,6 +17,13 @@
 
 	<!-- Optional: Module-specific dependencies -->
 	<dependencies>
+		<!-- Lombok -->
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<scope>provided</scope>
+		</dependency>
+
 		<!-- Keep JUnit if you want to write tests inside common-lib -->
 		<dependency>
 			<groupId>junit</groupId>

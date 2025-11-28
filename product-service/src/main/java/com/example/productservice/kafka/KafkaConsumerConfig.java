@@ -1,4 +1,4 @@
-package com.example.orderservice.kafka;
+package com.example.productservice.kafka;
 
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.springframework.beans.factory.annotation.Value;
